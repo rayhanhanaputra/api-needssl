@@ -82,3 +82,8 @@ exports.revokeSSL = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.downloadCRL = (req,res) =>{
+  const file = `/home/api-needssl/assets/crl.txt`;
+  res.download(file); // Set disposition and send it.
+}
