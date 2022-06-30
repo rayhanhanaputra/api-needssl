@@ -9,7 +9,7 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // Save User to Database
   if(req.body.password2!=req.body.password){
-    return res.status(404).send({ accessToken: null,message: "Password does not match" });
+    return res.status(404).send({message: "Failed! Password does not match" });
   } else{
     User.create({
       username: req.body.username,
