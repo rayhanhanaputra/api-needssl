@@ -1,4 +1,5 @@
 const db = require("../models");
+const { exec } = require('child_process');
 const Ssl = db.ssl;
 
 // exports.allAccess = (req, res) => {
@@ -23,7 +24,16 @@ exports.createSSL = (req, res) => {
           domain: req.body.domain,
           userId: req.userId
         }).then(user => {
-          res.send({ message: "Domain was registered successfully!" });
+          exec('pwd', (err, stdout, stderr) => {
+            if (err) {
+              // node couldn't execute the command
+              return;
+            }
+            // the *entire* stdout and stderr (buffered)
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+            res.send({ message: "Domain was registered successfully!" });
+          });
         })
           .catch(err => {
             res.status(500).send({ message: err.message });

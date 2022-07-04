@@ -36,7 +36,7 @@ module.exports = function(app) {
     controller.revokeSSL
   );
   app.get(
-    "api/ssl/downloadCRL",
+    "/api/ssl/downloadCRL",
     [authJwt.verifyToken],
     controller.downloadCRL
   );
