@@ -1,7 +1,7 @@
 module.exports = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "",
+    PASSWORD: "s3cur3Coding++",
     DB: "needssl",
     dialect: "mysql",
     pool: {
