@@ -1,4 +1,5 @@
 const db = require("../models");
+const { spawn } = require('node:child_process');
 const Ssl = db.ssl;
 
 // exports.allAccess = (req, res) => {
@@ -23,7 +24,6 @@ exports.createSSL = (req, res) => {
           domain: req.body.domain,
           userId: req.userId
         }).then(user => {
-          const { spawn } = require('node:child_process');
           const ls = spawn('sh', ['/home/api-needssl/assets/generate.sh', req.body.domain, req.body.c, req.body.st, req.body.l, req.body.o, req.body.ou, req.body.domain]);
 
           ls.stdout.on('data', (data) => {
