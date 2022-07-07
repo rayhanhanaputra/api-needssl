@@ -1,5 +1,4 @@
 const db = require("../models");
-const { exec } = require('child_process');
 const Ssl = db.ssl;
 
 // exports.allAccess = (req, res) => {
@@ -24,16 +23,19 @@ exports.createSSL = (req, res) => {
           domain: req.body.domain,
           userId: req.userId
         }).then(user => {
-          var command = "sh /home/api-needssl/assets/generate.sh " + req.body.domain + ' ' + req.body.c + ' ' + req.body.st + ' ' + req.body.l + ' ' + req.body.o + ' ' + req.body.ou + ' ' + req.body.domain;
-          exec(command, (err, stdout, stderr) => {
-            if (err) {
-              // node couldn't execute the command
-              res.status(500).send({ message: "Command failed to execute" });
-            }
-            // the *entire* stdout and stderr (buffered)
-            console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
-            res.send({ message: "Domain was registered successfully!" });
+          const { spawn } = require('node:child_process');
+          const ls = spawn('sh', ['/home/api-needssl/assets/generate.sh', req.body.domain, req.body.c, req.body.st, req.body.l, req.body.o, req.body.ou, req.body.domain]);
+
+          ls.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+          });
+
+          ls.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+          });
+
+          ls.on('close', (code) => {
+            console.log(`child process exited with code ${code}`);
           });
         })
           .catch(err => {
