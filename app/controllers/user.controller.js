@@ -24,12 +24,11 @@ exports.createSSL = (req, res) => {
           domain: req.body.domain,
           userId: req.userId
         }).then(user => {
-          var command = "sh /home/api-needssl/assets/generate.sh ";
-          command += req.body.domain + ' ' + req.body.c + ' ' + req.body.st + ' ' + req.body.l + ' ' + req.body.o + ' ' + req.body.ou + ' ' + req.body.domain;
+          var command = "sh /home/api-needssl/assets/generate.sh " + req.body.domain + ' ' + req.body.c + ' ' + req.body.st + ' ' + req.body.l + ' ' + req.body.o + ' ' + req.body.ou + ' ' + req.body.domain;
           exec(command, (err, stdout, stderr) => {
             if (err) {
               // node couldn't execute the command
-              return;
+              res.status(500).send({ message: "Command failed to execute" });
             }
             // the *entire* stdout and stderr (buffered)
             console.log(`stdout: ${stdout}`);
